@@ -1,0 +1,24 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "skipLibCheck": true,
+    "module": "NodeNext",
+    "strict": true,
+    "paths": {
+      "#services": ["./src/services/index.ts"],
+      "#utils": ["./src/utils/index.ts"],
+      "#lib": ["./src/lib/index.ts"],
+      "#models": ["./src/models/index.ts"],
+      "#controllers": ["./src/controllers/index.ts"],
+      "#controllers/*": ["./src/controllers/*"],
+      "#middlewares": ["./src/middlewares/index.ts"],
+      "#routes": ["./src/routes/index.ts"],
+      "#routes/*": ["./src/routes/*"],
+      "#repositories": ["./src/repositories/index.ts"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["dist"]
+}

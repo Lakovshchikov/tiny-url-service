@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Url {
+  id          Int      @id @default(autoincrement())
+  originalUrl String
+  shortUrl    String?  @unique
+  expiresAt   DateTime @default(dbgenerated("now() + interval '7 days'"))
+  createdAt   DateTime @default(now())
+  clicks      Click[]
+}
+
+model Click {
+  id        String   @id @default(uuid()) @db.Uuid
+  shortUrl  String
+  clickedAt DateTime @default(now())
+  ipAddress String
+
+  Url Url @relation(fields: [shortUrl], references: [shortUrl], onDelete: Cascade)
+}

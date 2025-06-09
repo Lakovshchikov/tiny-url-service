@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Url" ALTER COLUMN "shortUrl" DROP NOT NULL,
+ALTER COLUMN "expiresAt" SET DEFAULT now() + interval '7 days';
