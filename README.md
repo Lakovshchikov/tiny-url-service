@@ -21,7 +21,8 @@ tiny-url/
 ```
 
 > **Важно:**
-> Оба проекта (`tiny-url-service` и `tiny-url-front`) должны находиться в одной папке (`tiny-url`).
+> Оба проекта (`tiny-url-service` и [tiny-url-frontend](https://github.com/Lakovshchikov/tiny-url-frontend)) должны находиться в одной папке (`tiny-url`).
+> 
 
 ---
 
