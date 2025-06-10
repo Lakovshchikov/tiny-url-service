@@ -1,3 +1,4 @@
+import { Url } from "#lib";
 import { urlService } from "#services";
 import { RequestHandler } from "express";
 import { z } from "zod";
@@ -15,9 +16,7 @@ const requestBodyValidationSchema = z.object({
 
 type RequestBody = z.infer<typeof requestBodyValidationSchema>;
 
-type ResponseBody = ResponseWithErrorBody<{
-  shortUrl: string;
-}>;
+type ResponseBody = ResponseWithErrorBody<Url>;
 
 export const createShortUrl: RequestHandler<unknown, ResponseBody, RequestBody> = async (req, res, next) => {
   try {
@@ -32,13 +31,13 @@ export const createShortUrl: RequestHandler<unknown, ResponseBody, RequestBody> 
       return;
     }
 
-    const resultUrl = await urlService.createShortUrl({
+    const url = await urlService.createShortUrl({
       expiresAt,
       originalUrl,
       shortUrl,
     });
 
-    res.status(201).json({ shortUrl: resultUrl });
+    res.status(201).json(url);
   } catch (error: unknown) {
     next(error);
   }

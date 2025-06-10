@@ -1,4 +1,4 @@
-import { ErrorCodes } from "#lib";
+import { Url } from "#lib";
 import { urlRepository } from "#repositories";
 import { beforeEach, describe, expect, it, MockedFunction, vi } from "vitest";
 
@@ -13,12 +13,20 @@ vi.mock("#repositories", () => ({
 const mockedCreateUrl = urlRepository.createUrl as MockedFunction<typeof urlRepository.createUrl>;
 
 describe("Tests for createShortUrl service function", () => {
+  const testUrl: Url = {
+    createdAt: new Date(),
+    expiresAt: new Date(),
+    id: 1,
+    originalUrl: "https://test.ru",
+    shortUrl: "myShort",
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("Should return shortUrl", async () => {
-    mockedCreateUrl.mockResolvedValue("short123");
+    mockedCreateUrl.mockResolvedValue(testUrl);
     const params = {
       expiresAt: "2025-12-31",
       originalUrl: "https://example.com",
@@ -27,18 +35,8 @@ describe("Tests for createShortUrl service function", () => {
 
     const result = await createShortUrl(params);
 
-    expect(result).toBe("short123");
+    expect(result).toEqual(testUrl);
     expect(mockedCreateUrl).toHaveBeenCalledWith(params);
-  });
-
-  it("Should throw error if return null", async () => {
-    mockedCreateUrl.mockResolvedValue(null);
-
-    await expect(
-      createShortUrl({
-        originalUrl: "https://example.com",
-      }),
-    ).rejects.toThrow(ErrorCodes.INTERNAL_SERVER_ERROR);
   });
 
   it("Should throw error if createUrl throw error", async () => {

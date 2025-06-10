@@ -1,4 +1,4 @@
-import { prisma } from "#lib";
+import { ErrorCodes, prisma } from "#lib";
 import { analyticsRepository, urlRepository } from "#repositories";
 
 interface Params {
@@ -11,6 +11,13 @@ export const getOriginalUrlWithTracking = async (params: Params): Promise<string
 
   const url = await prisma.$transaction(async (tx) => {
     const url = await urlRepository.getShortUrlInfo(shortUrl, tx);
+
+    if (url.expiresAt.getTime() < Date.now()) {
+      await urlRepository.deleteShortUrl(shortUrl);
+
+      throw new Error(ErrorCodes.URL_EXPIRED);
+    }
+
     await analyticsRepository.trackClick(
       {
         ipAddress,

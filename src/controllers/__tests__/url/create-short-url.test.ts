@@ -1,3 +1,4 @@
+import { Url } from "#lib";
 import { urlService } from "#services";
 import { Request, Response } from "express";
 import { beforeEach, describe, expect, it, type MockedFunction, vi } from "vitest";
@@ -21,12 +22,20 @@ function getMockRes() {
 }
 
 describe("Tests for createShortUrl controller function", () => {
+  const testUrl: Url = {
+    createdAt: new Date(),
+    expiresAt: new Date(),
+    id: 1,
+    originalUrl: "https://test.ru",
+    shortUrl: "myShort",
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("Should create short url", async () => {
-    mockedCreateShortUrl.mockResolvedValue("short123");
+    mockedCreateShortUrl.mockResolvedValue(testUrl);
     const req = {
       body: {
         originalUrl: "https://example.com",
@@ -39,7 +48,7 @@ describe("Tests for createShortUrl controller function", () => {
     await createShortUrl(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith({ shortUrl: "short123" });
+    expect(res.json).toHaveBeenCalledWith(testUrl);
     expect(next).not.toHaveBeenCalled();
   });
 

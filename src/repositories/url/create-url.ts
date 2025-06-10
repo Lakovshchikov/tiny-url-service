@@ -1,4 +1,4 @@
-import { ErrorCodes, generateShortUrl, Prisma, prisma } from "#lib";
+import { ErrorCodes, generateShortUrl, Prisma, prisma, Url } from "#lib";
 
 interface Params {
   expiresAt?: string;
@@ -6,7 +6,7 @@ interface Params {
   shortUrl?: string;
 }
 
-export const createUrl = async (params: Params): Promise<null | string> => {
+export const createUrl = async (params: Params): Promise<Url> => {
   try {
     return await prisma.$transaction(async (tx) => {
       const { expiresAt, originalUrl, shortUrl } = params;
@@ -28,7 +28,7 @@ export const createUrl = async (params: Params): Promise<null | string> => {
         });
       }
 
-      return url.shortUrl;
+      return url;
     });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {

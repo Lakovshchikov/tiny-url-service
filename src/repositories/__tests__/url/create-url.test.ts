@@ -38,8 +38,8 @@ describe("Tests for createUrl repository function", () => {
   });
 
   it("Should create shortUrl taken from params", async () => {
-    const expectedShortUpl = "test-short";
-    const mockedCreate = vi.fn().mockResolvedValue({ ...testUrl, shortUrl: expectedShortUpl });
+    const expectedShortUrl = { ...testUrl, shortUrl: "test-short" };
+    const mockedCreate = vi.fn().mockResolvedValue(expectedShortUrl);
     mockedPrisma.$transaction.mockImplementation(async (cb) => {
       return cb({
         url: {
@@ -48,10 +48,10 @@ describe("Tests for createUrl repository function", () => {
       } as Omit<PrismaClient, ITXClientDenyList>);
     });
 
-    const result = await createUrl({ originalUrl: testUrl.originalUrl, shortUrl: expectedShortUpl });
+    const result = await createUrl({ originalUrl: testUrl.originalUrl, shortUrl: expectedShortUrl.shortUrl });
 
     expect(mockedCreate).toHaveBeenCalled();
-    expect(result).toBe(expectedShortUpl);
+    expect(result).toEqual(expectedShortUrl);
   });
 
   it("Should call generateShortUrl if shortUrl not passed into params", async () => {
@@ -76,7 +76,7 @@ describe("Tests for createUrl repository function", () => {
     expect(mockedCreate).toHaveBeenCalled();
     expect(mockedUpdate).toHaveBeenCalled();
     expect(generateShortUrl).toHaveBeenCalledWith(url.id);
-    expect(result).toBe(mocks.GENERATE_SHORT_URL_MOCKED_VALUE);
+    expect(result).toEqual({ ...url, shortUrl: mocks.GENERATE_SHORT_URL_MOCKED_VALUE });
   });
 
   it("Should throw error ENTITY_ALREADY_EXISTS if url with the same shortUrl already exist", async () => {

@@ -1,7 +1,9 @@
-import { isEntityAlreadyExistsError, isNotFoundError } from "#lib";
-import { Request, Response } from "express";
+import { isEntityAlreadyExistsError, isNotFoundError, isUrlExpiredError } from "#lib";
+import { NextFunction, Request, Response } from "express";
 
-export function errorHandler(err: unknown, req: Request, res: Response) {
+// express middleware error handler requires 4 arguments
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function errorHandler(err: unknown, req: Request, res: Response, next: NextFunction): void {
   if (isEntityAlreadyExistsError(err)) {
     res.status(409).json({
       details: "The provided entity is already in use. Please choose a different one.",
@@ -14,6 +16,14 @@ export function errorHandler(err: unknown, req: Request, res: Response) {
     res.status(404).json({
       details: "The requested resource could not be found.",
       error: "Not Found",
+    });
+    return;
+  }
+
+  if (isUrlExpiredError(err)) {
+    res.status(410).json({
+      details: "The requested URL has expired.",
+      error: "URL Expired",
     });
     return;
   }
