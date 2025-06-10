@@ -51,7 +51,7 @@ services:
     ports:
       - "8080:80"
     env_file:
-      - ../tiny-url-front/prod.env
+      - ../tiny-url-front/.env.production
     restart: unless-stopped
     networks:
       - base

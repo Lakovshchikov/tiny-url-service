@@ -18,7 +18,8 @@
     "coverage": "vitest run --coverage",
     "prepare": "husky",
     "migrate-dev": "npx prisma migrate dev --name init",
-    "copy-static": "copyfiles -u 1 \"public/**/*\" dist/public"
+    "copy-static": "copyfiles -u 1 \"public/**/*\" dist/public",
+    "prisma-generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "Lakovshchikov Ivan",
