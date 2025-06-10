@@ -1,4 +1,6 @@
-import { ErrorCodes, Prisma, prisma, Url } from "#lib";
+import type { Prisma } from "@prisma/client";
+
+import { ErrorCodes, prisma, Url } from "#lib";
 
 export const getShortUrlInfo = async (shortUrl: string, tx?: Prisma.TransactionClient): Promise<Url> => {
   const client = tx ?? prisma;

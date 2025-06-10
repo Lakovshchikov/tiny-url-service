@@ -1,4 +1,6 @@
-import { Click, Prisma, prisma } from "#lib";
+import type { Prisma } from "@prisma/client";
+
+import { Click, prisma } from "#lib";
 
 interface Params {
   ipAddress: string;

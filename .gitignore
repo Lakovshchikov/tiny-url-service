@@ -1,6 +1,7 @@
 node_modules
 dist
 .env
+dev-compose.yaml
 .vscode
 .DS_Store
 /coverage

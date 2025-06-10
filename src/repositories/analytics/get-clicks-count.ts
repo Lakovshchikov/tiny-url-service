@@ -1,4 +1,6 @@
-import { prisma, Prisma } from "#lib";
+import type { Prisma } from "@prisma/client";
+
+import { prisma } from "#lib";
 
 export const getClicksCount = async (shortUrl: string, tx?: Prisma.TransactionClient): Promise<number> => {
   const client = tx ?? prisma;
